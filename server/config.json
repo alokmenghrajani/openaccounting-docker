@@ -1,0 +1,16 @@
+{
+  "WebUrl": "http://localhost",
+  "Address": "",
+  "Port": 8080,
+  "ApiPrefix": "",
+  "KeyFile": "",
+  "CertFile": "",
+  "DatabaseAddress": "tcp(oa-mysql:3306)",
+  "Database": "openaccounting",
+  "User": "root",
+  "Password": "secret",
+  "MailgunDomain": "mg.domain.com",
+  "MailgunKey": "",
+  "MailgunEmail": "noreply@domain.com",
+  "MailgunSender": "Sender"
+}
