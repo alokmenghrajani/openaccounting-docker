@@ -10,24 +10,17 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: openaccounting
-    ports:
-      - 3306:3306
     healthcheck:
       test: ["CMD-SHELL", "exit | mariadb -h localhost -P 3306 -u root -psecret"]
       interval: 15s
       timeout: 10s
       retries: 3 
 
-# You can connect to the mysql database with:
-# docker exec -it openaccounting-mysql mariadb -u root -psecret -h localhost --protocol tcp openaccounting
-
   oa-server:
     container_name: openaccounting-server
     build: server/
     networks:
       - network1
-    ports:
-      - 8080:8080
     depends_on:
       oa-mysql:
         condition: service_healthy
@@ -35,10 +28,21 @@ services:
   oa-web:
     container_name: openaccounting-web
     build: web/
+    networks:
+      - network1
+
+  oa-proxy:
+    container_name: openaccounting-proxy
+    build: proxy/
+    networks:
+      - network1
+      - network2
     ports:
+      - 8080:8080
       - 4200:4200
 
 networks:
   network1:
+    internal: true
+  network2:
     internal: false
-

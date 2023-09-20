@@ -7,10 +7,11 @@ OpenAccounting needs three components to run:
 - A mysql database
 
 I personally like to run my software inside Docker containers. This repo contains a [docker-compose.yml](https://github.com/alokmenghrajani/openaccounting-docker/blob/main/docker-compose.yml) file
-which will:
-- bring up a maria/mysql database on port 3306.
-- git clone the latest version of [oa-server](https://github.com/openaccounting/oa-server), build it, and run it on port 8080.
-- git clone the latest version of [oa-web](https://github.com/openaccounting/oa-web), patch it, build it, and run it on port 4200.
+which will bring up 4 containers:
+1. a maria/mysql database on an internal network.
+2. git clone the latest version of [oa-server](https://github.com/openaccounting/oa-server), build it, and run it on the internal network.
+3. git clone the latest version of [oa-web](https://github.com/openaccounting/oa-web), patch it, build it, and run it on the internal network.
+4. run two socats to forward `port 8080` to [oa-server](https://github.com/openaccounting/oa-server) and `port 4200` to [oa-web](https://github.com/openaccounting/oa-web).
 
 You can adjust the [docker-compose.yml](https://github.com/alokmenghrajani/openaccounting-docker/blob/main/docker-compose.yml) file if you want different ports.
 
@@ -20,7 +21,7 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-You can then connect to [http://localhost:4200](http://localhost:4200) and use OpenAccounting. After creating your first user, you'll need to manually mark the email as verified:
+You can then connect to [http://localhost:4200](http://localhost:4200/settings). You'll have to set the server to `http://localhost:8080`. You can then [create your first user](http://localhost:4200/register). You'll need to manually mark the email as verified:
 ```
 docker exec -it openaccounting-mysql mariadb -u root -psecret -h localhost --protocol tcp openaccounting -e 'update user set emailVerified=1';
 ```

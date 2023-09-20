@@ -7,7 +7,5 @@ RUN sed -i 's/wss:/ws:/' src/app/core/session.service.ts
 
 RUN npm install
 
-EXPOSE 4200
-
 CMD ["npm", "run", "--", "ng", "serve", "--host", "0.0.0.0"]
 
